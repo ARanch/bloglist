@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const notesRouter = require('./controllers/notes')
+const blogsRouter = require('./controllers/blogs')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -23,6 +24,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/notes', notesRouter)
+app.use('/api/blogs', blogsRouter)
 app.get('/', (req, res) => {
   res.send('Hello world!')
 })
@@ -31,3 +33,4 @@ app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
 module.exports = app
+
