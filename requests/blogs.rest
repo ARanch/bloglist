@@ -3,8 +3,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    title: "Den fede blog",
-    author: "Rango",
-    url: "www.sowasound.com",
-    likes: 1
+    "title": "Den fede blog",
+    "author": "Rango",
+    "url": "www.sowasound.com",
+    "likes": 1
 }
