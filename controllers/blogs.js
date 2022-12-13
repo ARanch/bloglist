@@ -35,17 +35,6 @@ blogsRouter.post('/', (request, response, next) => {
         .catch(error => next(error))
 })
 
-
-blogsRouter.post('/', (request, response) => {
-    const blog = new Blog(request.body)
-
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
-})
-
 // blogsRouter.delete('/:id', (request, response, next) => {
 //     Note.findByIdAndRemove(request.params.id)
 //         .then(() => {
