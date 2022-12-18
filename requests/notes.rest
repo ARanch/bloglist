@@ -1,0 +1,13 @@
+# post new note
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "Hva så din gamle ost. Men federe.",
+    "important": true
+}
+
+###
+# get all notes
+GET http://localhost:3001/api/notes
+Content-Type: application/json

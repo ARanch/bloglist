@@ -51,6 +51,11 @@ describe('total likes', () => {
 
 describe('favourite blog', () => {
     test('is the blog with most likes', () => {
-        expect(favouriteBlog(listWithTwoBlogs)).toBe(7)
+        const expected = {
+            title: listWithTwoBlogs[0].title,
+            author: listWithTwoBlogs[0].author,
+            likes: listWithTwoBlogs[0].likes
+        }
+        expect(favouriteBlog(listWithTwoBlogs)).toMatchObject(expected)
     })
 })
