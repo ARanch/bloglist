@@ -64,6 +64,7 @@ test('notes can be added', async () => {
 
 test('empty note is not added', async () => {
     const emptyNote = {
+        content: '',
         important: false
     }
 
