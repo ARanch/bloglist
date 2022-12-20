@@ -3,7 +3,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "Hva så din gamle ost. Men federe.",
+    "content": "Hva så din gamle ostpik. Men federe.",
     "important": true
 }
 
