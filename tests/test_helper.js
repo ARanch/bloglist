@@ -13,6 +13,21 @@ const initialNotes = [
     }
 ]
 
+const initialBlogs = [
+    {
+        "title": "Den fede blog",
+        "author": "Rango",
+        "url": "www.sowasound.com",
+        "likes": 1
+    },
+    {
+        "title": "Sprøde ting",
+        "author": "Flemming Foreverfed",
+        "url": "www.flydenborg.com",
+        "likes": 20
+    },
+]
+
 const nonExistingId = async () => {
     const note = new Note({ content: 'willremovethissoon', date: new Date() })
     await note.save()
@@ -27,5 +42,8 @@ const notesInDb = async () => {
 }
 
 module.exports = {
-    initialNotes, nonExistingId, notesInDb
+    initialNotes,
+    initialBlogs,
+    nonExistingId,
+    notesInDb
 }

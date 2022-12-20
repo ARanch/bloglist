@@ -2,8 +2,8 @@ const supertest = require('supertest')
 const mongoose = require('mongoose')
 const helper = require('./test_helper')
 const app = require('../app')
-const api = supertest(app)
 
+const api = supertest(app)
 const Note = require('../models/note')
 
 // ==== 18/12/2022, 22.19  ==== 
@@ -11,11 +11,12 @@ const Note = require('../models/note')
 // note that this actually clears the MongoDB online atm.
 // use Jest beForeEarch() to clear and rewrite the database before test run
 beforeEach(async () => {
-    await Note.deleteMany({}) // delete notes
-    let noteObject = new Note(helper.initialNotes[0])
-    await noteObject.save()
-    noteObject = new Note(helper.initialNotes[1])
-    await noteObject.save()
+    await Note.deleteMany({})
+
+    const noteObjects = helper.initialNotes
+        .map(note => new Note(note))
+    const promiseArray = noteObjects.map(note => note.save())
+    await Promise.all(promiseArray)
 })
 // ========================================================
 
