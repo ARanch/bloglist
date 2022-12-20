@@ -1,10 +1,10 @@
-const { createTestScheduler } = require('jest')
-const mongoose = require('mongoose')
 const supertest = require('supertest')
+const mongoose = require('mongoose')
+const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
+
 const Note = require('../models/note')
-const helper = require('./test_helper')
 
 // ==== 18/12/2022, 22.19  ==== 
 // make sure database is in same state when testing, always
@@ -74,7 +74,7 @@ test('empty note is not added', async () => {
         .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/notes')
-    // const allNotes = helper.notesInDb()
+    const allNotes = await helper.notesInDb()
     // expect(response.body).toHaveLength(helper.initialNotes.length)
     // expect(response.body).toHaveLength(helper.initialNotes.length)
 })
