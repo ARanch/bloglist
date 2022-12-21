@@ -1,5 +1,6 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
+mongoose.set("strictQuery", false);
 const helper = require('./test_helper')
 const app = require('../app')
 
@@ -57,6 +58,19 @@ test('posting a blog with no like-prop defaults to 0 likes', async () => {
     const savedBlog = await Blog.findOne({ title: 'blog with no likes' })
     console.log(savedBlog)
     expect(savedBlog.likes).toBe(0)
+})
+
+test('posting a blog with no title or url is a bad request', async () => {
+    const blogMissingData = {
+        // title: 'fede tider',
+        author: 'rango',
+        // url: 'www.test.com'
+    }
+
+    await api.post('/api/blogs')
+        .send(blogMissingData)
+        .expect(400)
+
 })
 
 afterAll(() => {
