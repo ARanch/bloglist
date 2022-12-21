@@ -8,3 +8,15 @@ Content-Type: application/json
     "url": "www.sowasound.com",
     "likes": 1
 }
+
+###
+# put to blog
+PUT http://localhost:3001/api/blogs/63a36e23d2a22a9c0a629f0a
+Content-Type: application/json
+
+{
+    "title": "oste",
+    "author": "pik",
+    "url": "www.ost.dk",
+    "likes": 10
+}

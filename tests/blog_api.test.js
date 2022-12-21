@@ -5,7 +5,8 @@ const helper = require('./test_helper')
 const app = require('../app')
 
 const api = supertest(app)
-const Blog = require('../models/blog')
+const Blog = require('../models/blog');
+const blog = require('../models/blog');
 
 
 beforeEach(async () => {
@@ -71,7 +72,7 @@ describe('when a blog is POSTed', () => {
 })
 
 describe('deletion of a blog', () => {
-    test.only('deleting a blog with a specific id', async () => {
+    test('deleting a blog with a specific id', async () => {
         const firstBlog = await helper.blogsInDb()
         const blogToDelete = firstBlog[0]
         await api
@@ -80,7 +81,18 @@ describe('deletion of a blog', () => {
     })
 })
 
+describe('updating information of a blog', () => {
+    test('updating likes', async () => {
+        const blogToUpdate = await helper.blogsInDb()
+        const originalLikes = blogToUpdate[0].likes
+        blogToUpdate.likes = originalLikes+10
 
+        await api
+            .put(`/api/blogs/${blogToUpdate[0].id}`)
+            .send(blogToUpdate)
+            .expect(200)
+    })
+})
 
 afterAll(() => {
     mongoose.connection.close()
