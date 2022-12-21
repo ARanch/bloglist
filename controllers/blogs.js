@@ -49,4 +49,10 @@ blogsRouter.put('/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
+blogsRouter.delete('/:id', (request, response, next) => {
+    Blogs.findById(request.params.id).delete()
+    console.log(`Blog post with id ${request.params.id} deleted.`)
+    response.statusCode(204).end()
+})
+
 module.exports = blogsRouter
