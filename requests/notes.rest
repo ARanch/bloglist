@@ -5,6 +5,7 @@ Content-Type: application/json
 {
     "content": "Hva så din gamle ostpik. Men federe.",
     "important": true
+    "userId": "63a4d7448f61e187332200af"
 }
 
 ###
