@@ -6,14 +6,9 @@ module.exports = {
         'node': true,
         'jest': true // allows globals
     },
-    'extends': 'eslint:recommended', // predermined rules
+    'extends': ['eslint:recommended', './**'], // predermined rules
     'parserOptions': {
         'ecmaVersion': 12
-    },
-    'overrides': [
-    ],
-    'parserOptions': {
-        'ecmaVersion': 'latest'
     },
     'globals': {
         'process': true // stops error when checking if env variable exists
@@ -29,10 +24,11 @@ module.exports = {
             'error', { 'before': true, 'after': true }
         ],
         'no-console': 0, // overwrites console log error from pre-determined ruls
-        'indent': [
-            'error',
-            4
-        ],
+        // 'indent': [
+        //     'error',
+        //     4
+        // ],
+        'indent': ['error', 'tab'],
         'linebreak-style': [
             'error',
             'unix'
@@ -45,5 +41,6 @@ module.exports = {
             'error',
             'never'
         ]
-    }
+    },
+    "ignorePatterns": ["node_modules/**", "dist/**"]
 }
