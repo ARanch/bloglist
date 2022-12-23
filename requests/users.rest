@@ -1,0 +1,35 @@
+# posting a user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "userName": "abcde",
+    "name": "Superdude",
+    "password": "ab"
+}
+
+###
+# get all users
+GET http://localhost:3001/api/users
+Content-Type: application/json
+
+###
+# log in
+post http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "userName": "groot",
+    "password": "pølsemis"
+}
+
+###
+# posting note with token from login operation
+post http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdyb290IiwiaWQiOiI2M2E2MjUwNjYzNzYxYWFmNWZhMDQ2MGIiLCJpYXQiOjE2NzE4MzQ5MzF9.rv71i7NtgiqNzLRo5F3sWYBr1a-hJ07CCZ2ZP_DyWXc
+
+{
+    "content": "Tokens er fandme fede",
+    "important": true
+}
