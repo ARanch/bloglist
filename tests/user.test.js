@@ -13,7 +13,7 @@ describe('when there is initially one user in db', () => {
     await User.deleteMany({})
 
     const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
+    const user = new User({ userName: 'root', passwordHash })
 
     await user.save()
   })
@@ -22,7 +22,7 @@ describe('when there is initially one user in db', () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'mluukkai',
+      userName: 'mluukkai',
       name: 'Matti Luukkainen',
       password: 'salainen',
     }
@@ -36,28 +36,8 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
 
-    const usernames = usersAtEnd.map(u => u.username)
-    expect(usernames).toContain(newUser.username)
-  })
-  test('creation fails with proper statuscode and message if username already taken', async () => {
-    const usersAtStart = await helper.usersInDb()
-
-    const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen',
-    }
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
-
-    expect(result.body.error).toContain('username must be unique')
-
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd).toEqual(usersAtStart)
+    const userNames = usersAtEnd.map(u => u.userName)
+    expect(userNames).toContain(newUser.userName)
   })
 })
 
@@ -65,7 +45,7 @@ describe('when users are added', () => {
   beforeEach(async () => {
     await User.deleteMany({})
   })
-  test.only('returns 400 when name is less than 3 chars long', () => {
+  test('returns 400 when name is less than 3 chars long', () => {
     const newUser = {
       userName: 'ro',
       name: 'Superuser',
@@ -75,5 +55,31 @@ describe('when users are added', () => {
       .post('api/users')
       .send(newUser)
       .expect(400)
+  })
+
+  test('returns error if password is shorter than 3', () => {
+    const newUser = {
+      userName: 'root',
+      name: 'Superuser',
+      password: 'oh'
+    }
+    api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('returns error if user exists', async () => {
+    const existingUser = new User({
+      userName: 'exister',
+      name: 'Sum',
+      password: 'ohyeah'
+    })
+    await existingUser.save(existingUser)
+
+    api
+      .post('/api/users')
+      .send(existingUser)
+      .expect(409)
   })
 }) 
