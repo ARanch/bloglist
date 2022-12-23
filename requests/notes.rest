@@ -1,6 +1,7 @@
 # post new note
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+    Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdyb290IiwiaWQiOiI2M2E2MjUwNjYzNzYxYWFmNWZhMDQ2MGIiLCJpYXQiOjE2NzE4MzQ4NTl9.J64tr4V-a4bpv9d3oqu-hHCRbJhHmJFO243alah_Mgg
 
 {
     "content": "Spis en lunte.",
