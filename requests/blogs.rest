@@ -11,6 +11,17 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWRmZGFmY
 }
 
 ###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Testblog 2",
+    "author": "Rango",
+    "url": "www.rangocool.com",
+    "likes": 10
+}
+
+###
 # put to blog
 PUT http://localhost:3001/api/blogs/63a36e23d2a22a9c0a629f0a
 Content-Type: application/json
