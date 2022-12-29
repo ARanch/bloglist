@@ -4,6 +4,11 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const passwordRequirement = 3
 
+usersRouter.get('/clear/', async (request, response) => {
+  await User.deleteMany({})
+  return response.status(200)
+})
+
 usersRouter.get('/', async (request, response) => {
   const users = await User
     .find({})
@@ -34,6 +39,7 @@ usersRouter.post('/', async (request, response) => {
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
+  console.log('❌', 'passwordhash:', passwordHash)
 
   const user = new User({
     userName,

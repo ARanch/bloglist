@@ -3,9 +3,9 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "userName": "abcde",
+    "userName": "Rango",
     "name": "Superdude",
-    "password": "ab"
+    "password": "abc"
 }
 
 ###
@@ -14,13 +14,18 @@ GET http://localhost:3001/api/users
 Content-Type: application/json
 
 ###
+# delete all users
+GET http://localhost:3001/api/users/clear
+Content-Type: application/json
+
+###
 # log in
 post http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-    "userName": "groot",
-    "password": "pølsemis"
+    "userName": "abcde",
+    "password": "abc"
 }
 
 ###
