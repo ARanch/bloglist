@@ -37,3 +37,8 @@ Content-Type: application/json
 # delete all blogs
 GET http://localhost:3001/api/blogs/clear/
 Content-Type: application/json
+
+###
+# delete one blog
+DELETE http://localhost:3001/api/blogs/63ae0645fd264d2dee813da6
+Content-Type: application/json

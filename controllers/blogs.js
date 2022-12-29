@@ -4,6 +4,7 @@ const Blog = require('../models/blog')
 // needed for relating blogs to users
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const blog = require('../models/blog')
 
 // const getTokenFrom = request => {
 //     const authorization = request.get('authorization') // isolates token from request HEADER
@@ -18,11 +19,6 @@ blogsRouter.get('/', async (request, response) => {
         .find({})
         .populate('user', { userName: 1, name: 1 })
     response.json(blogs)
-})
-
-blogsRouter.get('/clear/', async (request, response) => {
-    await Blog.deleteMany({})
-    return response.status(200)
 })
 
 blogsRouter.get('/:id', (request, response, next) => {
@@ -78,10 +74,14 @@ blogsRouter.put('/:id', async (request, response, next) => {
     response.status(200).json(blog)
 })
 
-blogsRouter.delete('/:id', (request, response, next) => {
-    Blogs.findById(request.params.id).delete()
-    console.log(`Blog post with id ${request.params.id} deleted.`)
-    response.statusCode(204).end()
+blogsRouter.delete('/:id', async (request, response, next) => {
+    await Blog.deleteOne({ _id: request.params.id })
+    response.status(204).end()
+})
+
+blogsRouter.get('/clear/', async (request, response) => {
+    await Blog.deleteMany({})
+    return response.status(200)
 })
 
 module.exports = blogsRouter
