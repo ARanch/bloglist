@@ -3,6 +3,16 @@ POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-    "userName": "Rangos",
+    "userName": "Rango 1",
+    "password": "abc"
+}
+
+###
+# Log in 2
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "userName": "Rangoloade",
     "password": "abc"
 }

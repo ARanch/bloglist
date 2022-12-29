@@ -13,6 +13,12 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Note' // defining these types allow using the populate() method in fx usersRouter()!
         }
+    ],
+    blogs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Blog'
+        }
     ]
 })
 

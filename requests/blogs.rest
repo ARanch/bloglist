@@ -1,12 +1,13 @@
 # post new blog
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWRmZGFmYTEzN2RhNDIzNTAyZmM0MyIsImlhdCI6MTY3MjM0NzA2N30.MH691f2TjlealE1oppYqTvS3s8lzK68pFk3zS4dSSQY
 
 {
-    "title": "Den fede blog",
+    "title": "Testblog 1",
     "author": "Rango",
-    "url": "www.sowasound.com",
-    "likes": 1
+    "url": "www.rangocool.com",
+    "likes": 10
 }
 
 ###
@@ -20,3 +21,8 @@ Content-Type: application/json
     "url": "www.ost.dk",
     "likes": 10
 }
+
+###
+# delete all blogs
+GET http://localhost:3001/api/blogs/clear/
+Content-Type: application/json
