@@ -75,8 +75,17 @@ blogsRouter.put('/:id', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-    await Blog.deleteOne({ _id: request.params.id })
-    response.status(204).end()
+    const blogExists = await Blog.findById(request.params.id).exec()
+    console.log('❌', blogExists)
+    if (blogExists) {
+        await Blog.findByIdAndRemove(request.params.id)
+        // console.log('❌', Blog.findById(request.params.id).title)
+        console.log('❌', 'blog post exists...')
+        return response.status(200).end()
+    } else {
+        console.log('❌', 'blog DOESNT exist')
+        return response.status(204).end()
+    }
 })
 
 blogsRouter.get('/clear/', async (request, response) => {

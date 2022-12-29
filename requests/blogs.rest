@@ -40,5 +40,5 @@ Content-Type: application/json
 
 ###
 # delete one blog
-DELETE http://localhost:3001/api/blogs/63ae0645fd264d2dee813da6
+DELETE http://localhost:3001/api/blogs/63ae1472ce3e5a0ee88b1ef0
 Content-Type: application/json
