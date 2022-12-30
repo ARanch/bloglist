@@ -75,26 +75,22 @@ blogsRouter.put('/:id', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-    // Todo: giver "error: invalid token" også i manuel request
+    if (!request.token) {
+        return response.status(401).json({ error: 'no token provided! ' })
+    }
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     if (!decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
-    // const user = await User.findById(decodedToken.id)
     const blogExists = await Blog.findById(request.params.id).exec()
-    if (blogExists.user === decodedToken.id) { console.log('❌', 'BLOG AND USER ARE THE SAME!') }
-    try { console.log('👤', blogExists.user) }
-    catch (error) { console.log(error) }
-
-    if (blogExists) {
-        if (blogExists.user === jwt.decodedToken.id)
-            await Blog.findByIdAndRemove(request.params.id)
-        // console.log('❌', Blog.findById(request.params.id).title)
-        console.log('❌', 'blog post exists...')
-        return response.status(200).end()
+    if (blogExists.user.toString() === decodedToken.id) {
+        console.log('✅', 'BLOG AND USER ARE THE SAME!')
+        console.log('➡️', 'deleting blog...')
+        await Blog.findByIdAndRemove(request.params.id)
+        return response.status(204).end()
     } else {
         console.log('❌', 'blog DOESNT exist')
-        return response.status(204).end()
+        return response.status(401).json({ error: 'no blog owned by user token exists.' })
     }
 })
 

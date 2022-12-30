@@ -9,11 +9,11 @@ const Blog = require('../models/blog');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { create } = require('../models/blog');
+const { response } = require('../app');
 
-let user = null
-let token = null
-let loggedIn = null
-let created = null
+// let user = null
+// let token = null
+// let loggedIn = null
 
 beforeAll(() => {
     console.log('do something before all tests...')
@@ -84,27 +84,24 @@ describe('when a blog is POSTed', () => {
 describe('deletion of a blog', () => {
     test('deleting a blog with a specific id', async () => {
         // create user
-        user = {
+        const newUser = {
             userName: 'Blogs Test',
             name: 'Mr. Blog',
             password: 'abcdef'
         }
-        created = await api
+        user = await api
             .post('/api/users')
-            .send(user)
-            // .expect(201) // user created
-            // console.log('👤','created user:', created.text)
+            .send(newUser)
+            .expect(201) // user created
 
         // log in using the newly created user
         loggedIn = await api.post('/api/login')
             .send({
-                'userName': user.userName,
-                'password': user.password
+                'userName': newUser.userName,
+                'password': newUser.password
             })
-        // .expect(200) // OK - login succesful
+        .expect(200) // OK - login succesful
         token = loggedIn.body.token
-        console.log('👤 Id of created user:', created.body.id)
-        console.log('👤 Id of created user:', created.body.id)
         
         // create blog with user
         const newBlog = {
@@ -112,38 +109,38 @@ describe('deletion of a blog', () => {
                 author: 'Someone',
                 url: 'www.hej.com',
                 likes: 10,
-                user: created.body.id
+                user: user.body.id
             }
-        console.log('👤', newBlog)
-        // post the blog to be deleted
-        console.log('❌', 'token:!', token)
+        
         const blogRes = await api.post('/api/blogs')
             .set('Authorization', `Bearer ${token}`)
             .send(newBlog)
-            
-        
-        console.log('🚩', blogRes.text)
+        // console.log('🆔 of blog:', blogRes.body.id)
+
+        const returnedBlog = await Blog.findById(blogRes.body.id)
+        // console.log('🆔', returnedBlog.id)
         
         // test delete not allowed, since no authorization
-        await api
-            .delete(`/api/notes/${blogRes.body.id}`)
-            .expect(403)
+        let response = api
+            .delete(`/api/blogs/${blogRes.body.id}`)
+            .expect(401) // unauthorized
         
+        console.log('↩️', response.text)
         
         // test must not return 403 forbidden
         await api
+            .delete(`/api/blogs/${returnedBlog.id}`)
             .set('Authorization', `Bearer ${token}`)
-            .delete(`/api/notes/${blogToDelete.id}`)
             .expect(204)
     })
 
     test(
         'deleting blog withouth auth fails', async () => {
-            // const firstBlog = await helper.blogsInDb()
-            // const blogToDelete = firstBlog[0]
-            // await api
-            //     .delete(`/api/notes/${blogToDelete.id}`)
-            //     .expect(400) // which code❓
+            const firstBlog = await helper.blogsInDb()
+            const blogToDelete = firstBlog[0]
+            await api
+                .delete(`/api/notes/${blogToDelete.id}`)
+                .expect(400) // which code❓
         }
     )
 })
