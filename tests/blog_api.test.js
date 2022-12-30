@@ -10,6 +10,14 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { create } = require('../models/blog');
 
+let user = null
+let token = null
+let loggedIn = null
+let created = null
+
+beforeAll(() => {
+    console.log('do something before all tests...')
+})
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -76,26 +84,28 @@ describe('when a blog is POSTed', () => {
 describe('deletion of a blog', () => {
     test('deleting a blog with a specific id', async () => {
         // create user
-        const user = {
+        user = {
             userName: 'Blogs Test',
             name: 'Mr. Blog',
             password: 'abcdef'
         }
-        const created = await api
+        created = await api
             .post('/api/users')
             .send(user)
-            .expect(201) // user created
+            // .expect(201) // user created
             // console.log('👤','created user:', created.text)
-        
+
         // log in using the newly created user
-        const loggedIn = await api.post('/api/login')
+        loggedIn = await api.post('/api/login')
             .send({
                 'userName': user.userName,
                 'password': user.password
             })
-            .expect(200) // OK - login succesful
-        const token = loggedIn.body.token
+        // .expect(200) // OK - login succesful
+        token = loggedIn.body.token
         console.log('👤 Id of created user:', created.body.id)
+        console.log('👤 Id of created user:', created.body.id)
+        
         // create blog with user
         const newBlog = {
                 title: 'test users blog to delete',
@@ -104,12 +114,15 @@ describe('deletion of a blog', () => {
                 likes: 10,
                 user: created.body.id
             }
-        
+        console.log('👤', newBlog)
         // post the blog to be deleted
+        console.log('❌', 'token:!', token)
         const blogRes = await api.post('/api/blogs')
             .set('Authorization', `Bearer ${token}`)
             .send(newBlog)
-            .expect(201)
+            
+        
+        console.log('🚩', blogRes.text)
         
         // test delete not allowed, since no authorization
         await api

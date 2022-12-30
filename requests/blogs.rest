@@ -1,7 +1,7 @@
 # post new blog
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYWRmZGFmYTEzN2RhNDIzNTAyZmM0MyIsImlhdCI6MTY3MjM0ODQyMX0.v4r69NvzaCJotwWdWJUz4dihR4wisxoS0wS-3LWAzgo
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmdvIiwiaWQiOiI2M2FmNGFiYzVlODZiNWU5OGRkZDFjMjEiLCJpYXQiOjE2NzI0MzIzMjV9.Hju3IiINNaeWKakZXb_oj9ZoO3Kt-GDkswm_NXMURSY
 
 {
     "title": "Testblog 4",
@@ -40,5 +40,5 @@ Content-Type: application/json
 
 ###
 # delete one blog
-DELETE http://localhost:3001/api/blogs/63af2740c9dbfdeb60b272ae
-Content-Type: application/json
+DELETE http://localhost:3001/api/blogs/63af4ade5e86b5e98ddd1c27
+Content-Type: application/json eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmdvIiwiaWQiOiI2M2FmNGFiYzVlODZiNWU5OGRkZDFjMjEiLCJpYXQiOjE2NzI0MzIzMjV9.Hju3IiINNaeWKakZXb_oj9ZoO3Kt-GDkswm_NXMURSY

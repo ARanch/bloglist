@@ -8,7 +8,7 @@ const Note = require('../models/note')
 
 // ==== 18/12/2022, 22.19  ==== 
 // make sure database is in same state when testing, always
-// note that this actually clears the MongoDB online atm.
+// that this actually clears the MongoDB online atm.
 // use Jest beForeEarch() to clear and rewrite the database before test run
 beforeEach(async () => {
     await Note.deleteMany({})
