@@ -6,11 +6,14 @@ const app = require('../app')
 
 const api = supertest(app)
 const Blog = require('../models/blog');
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const { create } = require('../models/blog');
 
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-
+    await User.deleteMany({})
     const blogOjects = helper.initialBlogs
         .map(blog => new Blog(blog))
     const promiseArray = blogOjects.map(blog => blog.save())
@@ -32,7 +35,7 @@ describe('when a blog is POSTed', () => {
             "likes": 0
         }
 
-        await api.post('/api/blogs')
+        api.post('/api/blogs')
             .send(newBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/)
@@ -72,12 +75,64 @@ describe('when a blog is POSTed', () => {
 
 describe('deletion of a blog', () => {
     test('deleting a blog with a specific id', async () => {
-        const firstBlog = await helper.blogsInDb()
-        const blogToDelete = firstBlog[0]
+        // create user
+        const user = {
+            userName: 'Blogs Test',
+            name: 'Mr. Blog',
+            password: 'abcdef'
+        }
+        const created = await api
+            .post('/api/users')
+            .send(user)
+            .expect(201) // user created
+            // console.log('👤','created user:', created.text)
+        
+        // log in using the newly created user
+        const loggedIn = await api.post('/api/login')
+            .send({
+                'userName': user.userName,
+                'password': user.password
+            })
+            .expect(200) // OK - login succesful
+        const token = loggedIn.body.token
+        console.log('👤 Id of created user:', created.body.id)
+        // create blog with user
+        const newBlog = {
+                title: 'test users blog to delete',
+                author: 'Someone',
+                url: 'www.hej.com',
+                likes: 10,
+                user: created.body.id
+            }
+        
+        // post the blog to be deleted
+        const blogRes = await api.post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
+            .send(newBlog)
+            .expect(201)
+        
+        // test delete not allowed, since no authorization
         await api
+            .delete(`/api/notes/${blogRes.body.id}`)
+            .expect(403)
+        
+        
+        // test must not return 403 forbidden
+        await api
+            .set('Authorization', `Bearer ${token}`)
             .delete(`/api/notes/${blogToDelete.id}`)
             .expect(204)
     })
+
+    test(
+        'deleting blog withouth auth fails', async () => {
+            // const firstBlog = await helper.blogsInDb()
+            // const blogToDelete = firstBlog[0]
+            // await api
+            //     .delete(`/api/notes/${blogToDelete.id}`)
+            //     .expect(400) // which code❓
+        }
+    )
 })
 
 describe('updating information of a blog', () => {
