@@ -1,0 +1,51 @@
+###
+# clear users
+GET http://localhost:3001/api/users/clear
+###
+# posting a user
+@userName = "rango2"
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "userName": {{userName}},
+    "name": "Superdude",
+    "password": "abc"
+}
+
+###
+# @name login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "userName": {{userName}},
+    "password": "abc"
+}
+
+###
+# @name blog
+@authToken = {{login.response.body.token}}
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer {{authToken}}
+
+{
+    "title": {{$timestamp}},
+    "author": "Rango",
+    "url": "www.rangocool.com",
+    "likes": 10
+}
+
+###
+@authToken = {{login.response.body.token}}
+@blogId = {{blog.response.body.id}}
+# delete one blog
+DELETE http://localhost:3001/api/blogs/{{blogId}}
+Content-Type: application/json
+Authorization: bearer {{authToken}}
+
+###
+# delete one blog without auth
+DELETE http://localhost:3001/api/blogs/{{blogId}}
+Content-Type: application/json

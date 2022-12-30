@@ -6,13 +6,6 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const blog = require('../models/blog')
 
-// const getTokenFrom = request => {
-//     const authorization = request.get('authorization') // isolates token from request HEADER
-//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-//         return authorization.substring(7)
-//     }
-//     return null
-// }
 // ==== 29/12/2022, 21.17  ==== 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog
@@ -84,8 +77,8 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     }
     const blogExists = await Blog.findById(request.params.id).exec()
     if (blogExists.user.toString() === decodedToken.id) {
-        console.log('✅', 'BLOG AND USER ARE THE SAME!')
-        console.log('➡️', 'deleting blog...')
+        // console.log('✅', 'BLOG AND USER ARE THE SAME!')
+        // console.log('➡️', 'deleting blog...')
         await Blog.findByIdAndRemove(request.params.id)
         return response.status(204).end()
     } else {
