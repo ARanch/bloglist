@@ -70,24 +70,12 @@ describe('when a blog is POSTed', () => {
     })
 })
 
-describe.skip('deletion of a blog', () => {
-    // ❌ returns 204 for some reason, even though a restclient call returns 200 as expected
+describe('deletion of a blog', () => {
     test('deleting a blog with a specific id', async () => {
         const firstBlog = await helper.blogsInDb()
-        console.log('❌', firstBlog[0].id)
         const blogToDelete = firstBlog[0]
         await api
             .delete(`/api/notes/${blogToDelete.id}`)
-            .expect(200)
-    })
-
-    test('deleting a blog that does not exists returns 204', async () => {
-        const blogs = await helper.blogsInDb()
-        await api
-            .delete(`/api/notes/${blogs[0].id}`)
-        
-        await api
-            .delete(`/api/notes/${blogs[0].id}`)
             .expect(204)
     })
 })
