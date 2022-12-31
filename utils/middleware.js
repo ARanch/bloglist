@@ -1,5 +1,7 @@
 const { response } = require('../app')
 const logger = require('./logger')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const requestLogger = (request, response, next) => {
     logger.info('Method:', request.method)
@@ -32,8 +34,27 @@ const errorHandler = (error, request, response, next) => {
 const tokenExtractor = (request, response, next) => {
     const authorization = request.get('authorization') // isolates token from request HEADER
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        request.token = authorization.substring(7)
+        const token = authorization.substring(7)
+        request.token = token
     }
+    next()
+}
+
+const userExtractor = async (request, response, next) => {
+    // extracts the user id from the request
+    const authorization = request.get('authorization') // isolates token from request HEADER
+    let token
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        token = authorization.substring(7)
+    }
+    // todo returnerer "jwt malformed" – https://stackoverflow.com/questions/51849010/json-web-token-verify-return-jwt-malformed
+    console.log('secret:', process.env.SECRET)
+    const decodedToken = jwt.verify(token, process.env.SECRET) // 
+    if (!decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+    request.user = user
     next()
 }
 
@@ -41,5 +62,6 @@ module.exports = {
     requestLogger,
     unknownEndpoint,
     errorHandler,
-    tokenExtractor
+    tokenExtractor,
+    userExtractor
 }

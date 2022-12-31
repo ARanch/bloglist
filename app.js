@@ -28,8 +28,9 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
-app.use('/api/notes', notesRouter)
-app.use('/api/blogs', blogsRouter)
+// example of using middleware.userExtractor only on some routes
+app.use('/api/notes', middleware.userExtractor, notesRouter)
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.get('/', (req, res) => {

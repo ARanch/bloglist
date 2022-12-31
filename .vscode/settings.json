@@ -1,3 +1,6 @@
 {
-    "eslint.run": "onSave"
+    "eslint.run": "onSave",
+    "jest.autoRun": {
+        "watch": false
+    }
 }
