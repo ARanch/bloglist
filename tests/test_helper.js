@@ -154,5 +154,5 @@ module.exports = {
     usersInDb,
     makeDummyUser,
     defineBlog,
-
+    logIn,
 }

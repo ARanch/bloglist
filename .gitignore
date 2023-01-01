@@ -1,1 +1,3 @@
 node_modules
+.vscode/launch.json
+tests/note_api.test.skip

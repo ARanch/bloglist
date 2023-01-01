@@ -8,6 +8,9 @@ const api = supertest(app)
 const User = require('../models/user')
 const Blog = require('../models/blog')
 
+const verbose = false
+
+
 beforeEach(async () => {
     await Blog.deleteMany({})
     await User.deleteMany({})
@@ -19,7 +22,13 @@ beforeEach(async () => {
         .map(blog => new Blog(blog))
     // save initital blogs
     const promiseArray = blogOjects.map(blog => blog.save())
+
     await Promise.all(promiseArray)
+
+    if (verbose) {
+        console.log('👤', newUser)
+        console.log('📕', await helper.blogsInDb())
+    }
 })
 
 describe('when a blog is POSTed', () => {
@@ -105,24 +114,29 @@ describe('deletion of a blog', () => {
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
             .expect(401) // unathorized
-    }
-    )
-})
+    })
 
-describe('updating information of a blog', () => {
     test('updating likes', async () => {
-        const token = helper.makeDummyUser()
-        const blogToUpdate = await helper.blogsInDb()
-        const originalLikes = blogToUpdate[0].likes
-        blogToUpdate.likes = originalLikes + 10
+        const token = await helper.makeDummyUser()
+        const blog = helper.defineBlog()
 
-        await api
-            .put(`/api/blogs/${blogToUpdate[0].id}`)
-            .send(blogToUpdate)
+        newBlog = await api.post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
+            .send(blog)
+
+        const originalLikes = blog.likes
+        newBlog.body.likes = originalLikes + 10
+
+        response = await api
+            .put(`/api/blogs/${newBlog.body.id}`)
+            .send(newBlog.body)
             .set('Authorization', `Bearer ${token}`)
             .expect(200)
     })
 })
+
+// describe('updating information of a blog', () => {
+// })
 
 afterAll(() => {
     mongoose.connection.close()
