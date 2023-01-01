@@ -47,8 +47,6 @@ const userExtractor = async (request, response, next) => {
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
         token = authorization.substring(7)
     }
-    // todo returnerer "jwt malformed" – https://stackoverflow.com/questions/51849010/json-web-token-verify-return-jwt-malformed
-    console.log('secret:', process.env.SECRET)
     const decodedToken = jwt.verify(token, process.env.SECRET) // 
     if (!decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })

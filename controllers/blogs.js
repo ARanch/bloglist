@@ -27,15 +27,7 @@ blogsRouter.get('/:id', (request, response, next) => {
 })
 
 blogsRouter.post('/', async (request, response, next) => {
-    // console.log('❌', 'MIDDLEWARE TEST', request.user)
     const body = request.body
-    // 🔻 ==== 29/12/2022, 21.26 Relating post to user 👤
-    // const decodedToken = jwt.verify(request.token, process.env.SECRET) // 🟡
-    // if (!decodedToken.id) {
-    //     return response.status(401).json({ error: 'token missing or invalid' })
-    // }
-    // const user = await User.findById(decodedToken.id)
-    // simplified version of above, using middleware:
     const user = request.user
     // 🔺 ===============
     const blog = new Blog({
